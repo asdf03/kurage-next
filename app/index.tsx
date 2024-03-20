@@ -1,8 +1,5 @@
-"use client";
-
 import TodoApp from "../components/TodoApp";
 import useAuth from "@/lib/useAuth";
-import SignInEmail from "@/components/SignInEmail";
 
 const Home = () => {
 	const { session: isLogin } = useAuth();
@@ -14,8 +11,8 @@ const Home = () => {
 		</div>
 	) : (
 		<div>
-			<h2>ログイン</h2>
-			<SignInEmail />
+			<h2>Todoアプリ</h2>
+			<TodoApp />
 		</div>
 	);
 }

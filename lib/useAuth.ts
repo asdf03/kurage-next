@@ -1,3 +1,5 @@
+"use client";
+
 import supabase from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
@@ -53,15 +55,7 @@ const useAuth = () => {
   };
 
   const userProfile: {
-    title: string;
-    description: string;
-    status: string;
-    due_date: string;
   } = {
-    title: session?.user?.user_metadata.user_metadata.title,
-    description: session?.user?.user_metadata.user_metadata.description,
-    status: session?.user?.user_metadata.user_metadata.status,
-    due_date: session?.user?.user_metadata.user_metadata.due_date,
   };
 
   return {
