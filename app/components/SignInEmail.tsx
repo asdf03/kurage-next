@@ -6,7 +6,7 @@ const SignInEmail = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleSignIn = async (e) => {
+	const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		await signInWithEmail(email, password);
 	};
