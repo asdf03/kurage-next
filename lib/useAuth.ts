@@ -52,8 +52,14 @@ const useAuth = () => {
     await supabase.auth.signOut();
   };
 
-  const userProfile = {
-    email: session?.user?.email
+  const userProfile: {
+    title: string;
+    description: string;
+    due_date: string;
+  } = {
+    title: session?.user?.user_metadata.user_metadata.title,
+    description: session?.user?.user_metadata.user_metadata.description,
+    due_date: session?.user?.user_metadata.user_metadata.due_date,
   };
 
   return {
