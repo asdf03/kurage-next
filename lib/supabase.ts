@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { create } from "domain";
 
 export type Database = {
 	id: string;

@@ -11,6 +11,20 @@ const Home = () => {
 		<div>
 			<h2>Todoアプリ</h2>
 			<TodoApp />
+			
+			<style jsx global>{`
+				div {
+					margin: 10px;
+					border: 1px solid #000;
+					background: #fff;
+				}
+				* {
+					color: #000;
+				}
+				input {
+					border: 1px solid #000;
+				}
+			`}</style>
 		</div>
 	) : (
 		<div>
@@ -18,6 +32,8 @@ const Home = () => {
 			<SignInEmail />
 		</div>
 	);
+
+
 }
 
 export default Home;

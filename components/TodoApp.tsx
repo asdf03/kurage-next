@@ -7,10 +7,14 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
 
 const TodoApp = () => {
-	const [inputText, setInputText] = useState("");
 	const [messageText, setMessageText] = useState<Database[]>([]);
-	const { session: isLogin, userProfile } = useAuth();
+	const { session: isLogin } = useAuth();
 	const router = useRouter();
+
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [status, setStatus] = useState('');
+	const [dueDate, setDueDate] = useState('');
 
 	useEffect(() => {
 		if (!isLogin) {
@@ -53,34 +57,33 @@ const TodoApp = () => {
 		fetchRealtimeData();
 	}, []);
 
-	const onChangeInputText = (event: React.ChangeEvent<HTMLInputElement>) => setInputText(() => event.target.value);
+	const onChangeInputText = (event: React.ChangeEvent<HTMLInputElement>) => setTitle(() => event.target.value);
 
 	const onSubmitNewMessage = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (inputText === "") return;
+		if (title === "") return;
 		// addSupabaseData({ ...userProfile });
-		setInputText("");
+		setTitle("");
 	};
 
 	return (
 		<div>
 			{messageText.map((item) => (
 				<div key={item.id}>
-					<p>{item.id}</p>
-					<p>{item.title}</p>
-					<p>{item.description}</p>
-					<p>{item.status}</p>
-					<p>{item.due_date}</p>
-					<p>{item.created_at}</p>
+						<p>Title: {item.title}</p>
+						<p>Discription: {item.description}</p>
 				</div>
 			))}
 
 			<form onSubmit={onSubmitNewMessage}>
-				<input type="text" name="title" value={inputText} onChange={onChangeInputText} aria-aria-label="タイトル" />
-				<input type="description" name="description" value={inputText} onChange={onChangeInputText} aria-aria-label="詳細" />
-				<input type="status" name="status" value={inputText} onChange={onChangeInputText} aria-aria-label="進捗" />
-				<input type="due_date" name="due_date" value={inputText} onChange={onChangeInputText} aria-aria-label="完了予定" />
-				<button type="submit" disabled={inputText === ""}>送信</button>
+				<input
+					type="text"
+					name="title"
+					value={title}
+					onChange={onChangeInputText}
+					aria-label="タイトル"
+				/>
+				<button type="submit" disabled={title === ""}>送信</button>
 			</form>
 		</div>
 	);
