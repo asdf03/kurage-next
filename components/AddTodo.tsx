@@ -1,12 +1,8 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
-// TODO import { addSupabaseData } from '../path/to/your/supabase';
-
-interface addTodoProps {
-    onAdd: (todoText: string) => void
-}
+import { addSupabaseData } from '../lib/addSupabaseData';
 
 // 引数として受け取ったpropsオブジェクト内のonAddプロパティにアクセスしている
-const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
+const AddTodo: React.FC = () => {
     // useState は2要素の配列(現在の状態の値, 値を更新する関数)を返す
     const [inputValue, setInputValue] = useState<string>('');
 
@@ -15,9 +11,14 @@ const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
     const handleBlur = async () => {
         // スペース、タブ、改行を無効化するためにtrim関数を使用する
         if(!inputValue.trim()) return;
-        await onAdd(inputValue);
+        await addSupabaseData({
+            title: inputValue,
+            description: '',
+            status: '',
+            due_date: '',
+        });
         setInputValue('');
-    }
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -28,14 +29,6 @@ const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
             await handleBlur();
         }
     };
-    // TODO
-    /*
-    const addTodoItem = async (TodoText: string) => {
-        const { data, error } = await supabase
-            .from('todos')
-
-    }
-    */
 
     return (
         <input
@@ -51,5 +44,3 @@ const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
 }
 
 export default AddTodo;
-
-
