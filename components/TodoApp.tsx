@@ -1,7 +1,7 @@
 "use client";
 
 import supabase, { Database } from "@/lib/supabase"
-import { TABLE_NAME, addSupabaseData, fetchDatabase } from "@/lib/supabaseFunctions"
+import { TABLE_NAME, addSupabaseData, fetchDatabase } from "@/lib/addSupabaseData"
 import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"

@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
+// TODO import { addSupabaseData } from '../path/to/your/supabase';
 
 interface addTodoProps {
     onAdd: (todoText: string) => void
@@ -11,10 +12,10 @@ const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
 
     // handleBlurという関数は、一般的にblurイベント(ユーザーが要素からフォーカスを移動させた時に発生)
     // にトリガーされる関数の名前
-    const handleBlur = () => {
+    const handleBlur = async () => {
         // スペース、タブ、改行を無効化するためにtrim関数を使用する
         if(!inputValue.trim()) return;
-        onAdd(inputValue);
+        await onAdd(inputValue);
         setInputValue('');
     }
 
@@ -22,12 +23,19 @@ const AddTodo: React.FC<addTodoProps> = ({ onAdd }) => {
         setInputValue(e.target.value);
     };
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
         if(e.key === 'Enter') {
-            handleBlur();
-            e.preventDefault();
+            await handleBlur();
         }
     };
+    // TODO
+    /*
+    const addTodoItem = async (TodoText: string) => {
+        const { data, error } = await supabase
+            .from('todos')
+
+    }
+    */
 
     return (
         <input
