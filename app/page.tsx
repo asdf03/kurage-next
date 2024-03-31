@@ -3,6 +3,7 @@
 import TodoApp from "../components/TodoApp";
 import useAuth from "@/lib/useAuth";
 import SignInEmail from "@/components/SignInEmail";
+import AddTodo from "@/components/AddTodo";
 
 const Home = () => {
 	const { session: isLogin } = useAuth();

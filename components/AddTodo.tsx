@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { addSupabaseData } from '../lib/addSupabaseData';
+import { NodeNextRequest } from "next/dist/server/base-http/node";
 
 // 引数として受け取ったpropsオブジェクト内のonAddプロパティにアクセスしている
 const AddTodo: React.FC = () => {
@@ -13,9 +14,6 @@ const AddTodo: React.FC = () => {
         if(!inputValue.trim()) return;
         await addSupabaseData({
             title: inputValue,
-            description: '',
-            status: '',
-            due_date: '',
         });
         setInputValue('');
     };
@@ -31,15 +29,17 @@ const AddTodo: React.FC = () => {
     };
 
     return (
-        <input
-            type="text"
-            value={inputValue}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-            placeholder="タスクを追加"
-            className="todo-input"
-        />
+        <div>
+            <input
+            	type="text"
+            	value={inputValue}
+            	onChange={handleChange}
+            	onBlur={handleBlur}
+            	onKeyDown={handleKeyDown}
+            	placeholder="タスクを追加"
+            	className="todo-input"
+        	/>
+        </div>
     );
 }
 

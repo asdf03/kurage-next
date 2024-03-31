@@ -5,16 +5,12 @@ import { TABLE_NAME, addSupabaseData, fetchDatabase } from "@/lib/addSupabaseDat
 import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
+import AddTodo from "./AddTodo";
 
 const TodoApp = () => {
 	const [messageText, setMessageText] = useState<Database[]>([]);
 	const { session: isLogin } = useAuth();
 	const router = useRouter();
-
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
-	const [status, setStatus] = useState('');
-	const [dueDate, setDueDate] = useState('');
 
 	useEffect(() => {
 		if (!isLogin) {
@@ -57,34 +53,14 @@ const TodoApp = () => {
 		fetchRealtimeData();
 	}, []);
 
-	const onChangeInputText = (event: React.ChangeEvent<HTMLInputElement>) => setTitle(() => event.target.value);
-
-	const onSubmitNewMessage = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		if (title === "") return;
-		// addSupabaseData({ ...userProfile });
-		setTitle("");
-	};
-
 	return (
 		<div>
 			{messageText.map((item) => (
 				<div key={item.id}>
-						<p>Title: {item.title}</p>
-						<p>Discription: {item.description}</p>
+					<p>Title: {item.title}</p>
 				</div>
 			))}
-
-			<form onSubmit={onSubmitNewMessage}>
-				<input
-					type="text"
-					name="title"
-					value={title}
-					onChange={onChangeInputText}
-					aria-label="タイトル"
-				/>
-				<button type="submit" disabled={title === ""}>送信</button>
-			</form>
+			<AddTodo />
 		</div>
 	);
 };

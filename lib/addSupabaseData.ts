@@ -11,16 +11,13 @@ export const fetchDatabase = async () => {
   }
 };
 
-type InsertProps = Pick<Database, "title" | "description" | "status" | "due_date">;
+type InsertProps = Pick<Database,"title">;
 
 export const addSupabaseData = async ({
 	title,
-	description = '',
-	status = '',
-	due_date = '',
 }: InsertProps) => {
 	try {
-		await supabase.from(TABLE_NAME).insert({ title, description, status, due_date });
+		await supabase.from(TABLE_NAME).insert({ title });
 	} catch (error) {
 		console.error(error);
 	}
