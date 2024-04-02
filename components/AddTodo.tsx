@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { addSupabaseData } from '../lib/addSupabaseData';
-import { NodeNextRequest } from "next/dist/server/base-http/node";
 
 // 引数として受け取ったpropsオブジェクト内のonAddプロパティにアクセスしている
 const AddTodo: React.FC = () => {

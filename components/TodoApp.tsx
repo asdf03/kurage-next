@@ -1,11 +1,13 @@
 "use client";
 
 import supabase, { Database } from "@/lib/supabase"
-import { TABLE_NAME, addSupabaseData, fetchDatabase } from "@/lib/addSupabaseData"
+import { fetchDatabase } from "@/lib/fetchDatabaseData"
 import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
 import AddTodo from "./AddTodo";
+
+const TABLE_NAME = "todo-app";
 
 const TodoApp = () => {
 	const [messageText, setMessageText] = useState<Database[]>([]);
