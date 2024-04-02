@@ -3,19 +3,19 @@ import supabase, { Database } from "./supabase";
 const TABLE_NAME = "todo-app";
 
 type UpdateProps = {
-    id: number;
-    title: string;
+    id: string;
+    status: string;
 };
 
 // データの更新
 export const updateSupabaseData = async ({
     id,
-    title,
+    status,
 }: UpdateProps) => {
     try {
         const { data, error } = await supabase
             .from(TABLE_NAME)
-            .update({ title })
+            .update({ status })
             .match({ id });
             
         if (error) throw error;

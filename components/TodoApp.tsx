@@ -1,7 +1,8 @@
 "use client";
 
 import supabase, { Database } from "@/lib/supabase"
-import { fetchDatabase } from "@/lib/fetchDatabaseData"
+import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
+import { updateSupabaseData } from "@/lib/updateSupabaseData"
 import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
@@ -48,17 +49,37 @@ const TodoApp = () => {
 	};
 
 	useEffect(() => {
-		(async () => {
-			const allMessage = await fetchDatabase();
+        (async () => {
+            let allMessage = await fetchSupabaseData();
+            if (allMessage) {
+                // titleで降順にソート
+                allMessage.sort((a, b) => b.title.localeCompare(a.title));
+                setMessageText(allMessage as Database[]);
+            }
+        })();
+        fetchRealtimeData();
+    }, []);
+
+	const clickCheckBox = async (id: string, status: string) => {
+		await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
+		const allMessage = await fetchSupabaseData();
+		if (allMessage) {
+			// titleで降順にソート
+			allMessage.sort((a, b) => b.title.localeCompare(a.title));
 			setMessageText(allMessage as Database[]);
-		})();
-		fetchRealtimeData();
-	}, []);
+		}
+		setMessageText(allMessage as Database[]);
+	};
 
 	return (
 		<div>
 			{messageText.map((item) => (
 				<div key={item.id}>
+					<div>
+					<button onClick={() => clickCheckBox(item.id, item.status)}>
+						{item.status === "done" ? "☑" : "□"}
+					</button>
+					</div>
 					<p>Title: {item.title}</p>
 				</div>
 			))}
