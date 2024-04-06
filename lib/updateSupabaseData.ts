@@ -2,10 +2,7 @@ import supabase, { Database } from "./supabase";
 
 const TABLE_NAME = "todo-app";
 
-type UpdateProps = {
-    id: string;
-    status: string;
-};
+type UpdateProps = Pick<Database, "id" | "status">;
 
 // データの更新
 export const updateSupabaseData = async ({

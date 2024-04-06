@@ -7,11 +7,13 @@ import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
 import AddTodo from "./AddTodo";
+import { todo } from "node:test";
 
 const TABLE_NAME = "todo-app";
 
 const TodoApp = () => {
 	const [messageText, setMessageText] = useState<Database[]>([]);
+	const currentTodos = fetchSupabaseData();
 	const { session: isLogin } = useAuth();
 	const router = useRouter();
 
@@ -61,6 +63,7 @@ const TodoApp = () => {
     }, []);
 
 	const clickCheckBox = async (id: string, status: string) => {
+
 		await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
 		const allMessage = await fetchSupabaseData();
 		if (allMessage) {
@@ -69,6 +72,12 @@ const TodoApp = () => {
 			setMessageText(allMessage as Database[]);
 		}
 		setMessageText(allMessage as Database[]);
+
+
+		console.log('============');
+		console.log(messageText);
+		console.log('============');
+
 	};
 
 	return (
