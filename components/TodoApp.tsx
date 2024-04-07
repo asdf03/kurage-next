@@ -21,55 +21,54 @@ const TodoApp = () => {
 
 	useEffect(() => {
         (async () => {
-            let supabaseData = await fetchSupabaseData();
-            if (supabaseData) {
-                supabaseData.sort((a, b) => b.title.localeCompare(a.title));
-                setTodoTableData(supabaseData as Database[]);
-            }
-        })();
-    }, []);
+		let supabaseData = await fetchSupabaseData();
+		if (supabaseData) {
+			supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+			setTodoTableData(supabaseData as Database[]);
+		}
+	})();
+}, []);
 
-	const clickCheckBox = async (id: string, status: string) => {
+const clickCheckBox = async (id: string, status: string) => {
+	setTodoTableData(todoTableData.map(todo => {
+		if (todo.id === id) {
+			return { ...todo, status: status === "done" ? "todo" : "done"};
+		}
+		return todo;
+	}));
+
+	try {
+		await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
+		const supabaseData = await fetchSupabaseData();
+		if (supabaseData) {
+			supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+			setTodoTableData(supabaseData as Database[]);
+		}
+		await setTodoTableData(supabaseData as Database[]);
+	} catch (error) {
 		setTodoTableData(todoTableData.map(todo => {
-			if (todo.id === id) {
+			if(todo.id === id) {
 				return { ...todo, status: status === "done" ? "todo" : "done"};
 			}
 			return todo;
 		}));
-
-		try {
-			updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
-			const supabaseData = await fetchSupabaseData();
-			if (supabaseData) {
-				supabaseData.sort((a, b) => b.title.localeCompare(a.title));
-				setTodoTableData(supabaseData as Database[]);
-			}
-			setTodoTableData(supabaseData as Database[]);
-		} catch (error) {
-			setTodoTableData(todoTableData.map(todo => {
-				if(todo.id === id) {
-					return { ...todo, status: status === "done" ? "todo" : "done"};
-				}
-				return todo;
-			}));
-		}
 	}
+}
 
-	return (
-		<div>
-			{todoTableData.map((item) => (
-				<div key={item.id}>
-					<div>
-					<button onClick={() => clickCheckBox(item.id, item.status)}>
-						{item.status === "done" ? "☑" : "□"}
-					</button>
-					</div>
-					<p>Title: {item.title}</p>
+return (
+	<div>
+		{todoTableData.map((item) => (
+			<div key={item.id}>
+				<div>
+				<button onClick={() => clickCheckBox(item.id, item.status)}>
+					{item.status === "done" ? "☑" : "□"}
+				</button>
 				</div>
-			))}
-			<AddTodo />
-		</div>
-	);
-};
+				<p>Title: {item.title}</p>
+			</div>
+		))}
+		<AddTodo />
+	</div>
+);
 
 export default TodoApp;
