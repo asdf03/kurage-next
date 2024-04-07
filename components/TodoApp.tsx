@@ -7,13 +7,9 @@ import useAuth from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react"
 import AddTodo from "./AddTodo";
-import { todo } from "node:test";
-
-const TABLE_NAME = "todo-app";
 
 const TodoApp = () => {
-	const [messageText, setMessageText] = useState<Database[]>([]);
-	const currentTodos = fetchSupabaseData();
+	const [todoTableData, setTodoTableData] = useState<Database[]>([]);
 	const { session: isLogin } = useAuth();
 	const router = useRouter();
 
@@ -23,66 +19,45 @@ const TodoApp = () => {
 		}
 	}, [isLogin, router]);
 
-	const fetchRealtimeData = () => {
-		try {
-			supabase
-				.channel("table_postgres_changes")
-				.on(
-					"postgres_changes",
-					{
-						event: "*",
-						schema: "public",
-						table: TABLE_NAME,
-					},
-					(payload) => {
-						if (payload.eventType === "INSERT") {
-							console.log('payload', payload);
-							const { id, title, description, status, due_date, created_at } = payload.new;
-							setMessageText((messageText) => [...messageText, { id, title, description, status, due_date, created_at }]);
-						}
-					}
-				)
-				.subscribe();
-
-				return() => supabase.channel("table_postgres_changes").unsubscribe();
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	useEffect(() => {
         (async () => {
-            let allMessage = await fetchSupabaseData();
-            if (allMessage) {
-                // titleで降順にソート
-                allMessage.sort((a, b) => b.title.localeCompare(a.title));
-                setMessageText(allMessage as Database[]);
+            let supabaseData = await fetchSupabaseData();
+            if (supabaseData) {
+                supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+                setTodoTableData(supabaseData as Database[]);
             }
         })();
-        fetchRealtimeData();
     }, []);
 
 	const clickCheckBox = async (id: string, status: string) => {
+		setTodoTableData(todoTableData.map(todo => {
+			if (todo.id === id) {
+				return { ...todo, status: status === "done" ? "todo" : "done"};
+			}
+			return todo;
+		}));
 
-		await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
-		const allMessage = await fetchSupabaseData();
-		if (allMessage) {
-			// titleで降順にソート
-			allMessage.sort((a, b) => b.title.localeCompare(a.title));
-			setMessageText(allMessage as Database[]);
+		try {
+			updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
+			const supabaseData = await fetchSupabaseData();
+			if (supabaseData) {
+				supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+				setTodoTableData(supabaseData as Database[]);
+			}
+			setTodoTableData(supabaseData as Database[]);
+		} catch (error) {
+			setTodoTableData(todoTableData.map(todo => {
+				if(todo.id === id) {
+					return { ...todo, status: status === "done" ? "todo" : "done"};
+				}
+				return todo;
+			}));
 		}
-		setMessageText(allMessage as Database[]);
-
-
-		console.log('============');
-		console.log(messageText);
-		console.log('============');
-
-	};
+	}
 
 	return (
 		<div>
-			{messageText.map((item) => (
+			{todoTableData.map((item) => (
 				<div key={item.id}>
 					<div>
 					<button onClick={() => clickCheckBox(item.id, item.status)}>
