@@ -23,7 +23,7 @@ const TodoApp = () => {
         (async () => {
 			let supabaseData = await fetchSupabaseData();
 			if (supabaseData) {
-				supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+				supabaseData.sort((a, b) => b.created_at.localeCompare(a.created_at));
 				setTodoTableData(supabaseData as Database[]);
 			}
 		})();
@@ -41,7 +41,7 @@ const TodoApp = () => {
 			await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
 			const supabaseData = await fetchSupabaseData();
 			if (supabaseData) {
-				supabaseData.sort((a, b) => b.title.localeCompare(a.title));
+				supabaseData.sort((a, b) => b.created_at.localeCompare(a.created_at));
 				setTodoTableData(supabaseData as Database[]);
 			}
 			setTodoTableData(supabaseData as Database[]);
