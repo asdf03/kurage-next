@@ -1,5 +1,4 @@
-// lib/formatDate.ts
-export const formatCurrentDate = (): string => {
+export const formatNowDate = (): string => {
     const today = new Date();
     const year = today.getFullYear().toString();
     const month = ('0' + (today.getMonth() + 1)).slice(-2);
