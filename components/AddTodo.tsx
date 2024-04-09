@@ -1,7 +1,12 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { addSupabaseData } from '../lib/addSupabaseData';
+import { updateSupabaseData } from "@/lib/updateSupabaseData";
 
-const AddTodo: React.FC = () => {
+interface ChildProps {
+    updateScreen: () => void;
+}
+
+const AddTodo: React.FC<ChildProps> = ({ updateScreen }) => {
     const [inputValue, setInputValue] = useState<string>('');
 
     const handleBlur = async () => {
@@ -10,10 +15,11 @@ const AddTodo: React.FC = () => {
             title: inputValue,
         });
         setInputValue('');
+        updateScreen();
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
+        handleBlur();
     };
 
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
