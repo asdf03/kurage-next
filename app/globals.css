@@ -1,33 +1,52 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  background: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+*:focus {
+  outline: none;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.main {
+  padding: 10px 30px;
+  font-family: sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.todo-item {
+  margin-bottom: 10px;
+  padding: 15px 0;
+  border-bottom: 1px solid #dadada;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.todo-item button {
+  margin: 0 20px;
+}
+
+.add-todo {
+  padding: 5px;
+}
+
+.add-todo .add-todo-inner {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.add-todo .add-todo-inner:focus {
+  background: #fafafa;
 }

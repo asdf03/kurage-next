@@ -1,30 +1,30 @@
 "use client";
 
-import supabase, { Database } from "@/lib/supabase"
+import { Database } from "@/lib/supabase"
 import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
 import { updateSupabaseData } from "@/lib/updateSupabaseData"
-import useAuth from "@/lib/useAuth";
-import { useRouter } from "next/navigation";
+import useAuth from "@/lib/useAuth"
+import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
-import AddTodo from "./AddTodo";
+import AddTodo from "./AddTodo"
 
 const TodoApp = () => {
-	const [todoTableData, setTodoTableData] = useState<Database[]>([]);
-	const { session: isLogin } = useAuth();
-	const router = useRouter();
+	const [todoTableData, setTodoTableData] = useState<Database[]>([])
+	const { session: isLogin } = useAuth()
+	const router = useRouter()
 
 	useEffect(() => {
 		if (!isLogin) {
-			router.push("/");
+			router.push("/")
 		}
-	}, [isLogin, router]);
+	}, [isLogin, router])
 
 	useEffect(() => {
         (async () => {
-			let supabaseData = await fetchSupabaseData();
+			let supabaseData = await fetchSupabaseData()
 			if (supabaseData) {
-				supabaseData.sort((a, b) => b.created_at.localeCompare(a.created_at));
-				setTodoTableData(supabaseData as Database[]);
+				supabaseData.sort((a, b) => a.created_at.localeCompare(b.created_at))
+				setTodoTableData(supabaseData as Database[])
 			}
 		})();
 	}, []);
@@ -38,38 +38,38 @@ const TodoApp = () => {
 		}));
 
 		try {
-			await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" });
-			const supabaseData = await fetchSupabaseData();
+			await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" })
+			const supabaseData = await fetchSupabaseData()
 			if (supabaseData) {
-				supabaseData.sort((a, b) => b.created_at.localeCompare(a.created_at));
-				setTodoTableData(supabaseData as Database[]);
+				supabaseData.sort((a, b) => a.created_at.localeCompare(b.created_at))
+				setTodoTableData(supabaseData as Database[])
 			}
-			setTodoTableData(supabaseData as Database[]);
+			setTodoTableData(supabaseData as Database[])
 		} catch (error) {
 			setTodoTableData(todoTableData.map(todo => {
 				if(todo.id === id) {
-					return { ...todo, status: status === "done" ? "todo" : "done"};
+					return { ...todo, status: status === "done" ? "todo" : "done"}
 				}
-				return todo;
-			}));
+				return todo
+			}))
 		}
 	}
 
 	return (
 		<div>
 			{todoTableData.map((item) => (
-				<div key={item.id}>
+				<div className="todo-item" key={item.id}>
 					<div>
 					<button onClick={() => clickCheckBox(item.id, item.status)}>
-						{item.status === "done" ? "☑" : "□"}
+						{item.status === "done" ? "✔" : "◯"}
 					</button>
 					</div>
-					<p>Title: {item.title}</p>
+					<p>{item.title}</p>
 				</div>
 			))}
-			<AddTodo />
+			<AddTodo setTodoTableData={setTodoTableData} />
 		</div>
-	);
+	)
 }
 
 export default TodoApp;

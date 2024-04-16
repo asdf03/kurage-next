@@ -1,12 +1,13 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
+import { Database } from "@/lib/supabase"
 import { addSupabaseData } from '../lib/addSupabaseData';
-import { updateSupabaseData } from "@/lib/updateSupabaseData";
+import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
 
-interface ChildProps {
-    updateScreen: () => void;
+type Props = {
+    setTodoTableData: (value: Database[]) => void;
 }
 
-const AddTodo: React.FC<ChildProps> = ({ updateScreen }) => {
+const AddTodo: React.FC<Props> = ({ setTodoTableData }) => {
     const [inputValue, setInputValue] = useState<string>('');
 
     const handleBlur = async () => {
@@ -15,11 +16,15 @@ const AddTodo: React.FC<ChildProps> = ({ updateScreen }) => {
             title: inputValue,
         });
         setInputValue('');
-        updateScreen();
+        const supabaseData = await fetchSupabaseData();
+        if (supabaseData) {
+            supabaseData.sort((a, b) => a.created_at.localeCompare(b.created_at));
+            setTodoTableData(supabaseData as Database[]);
+        }
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        handleBlur();
+        setInputValue(e.target.value);
     };
 
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
@@ -29,7 +34,7 @@ const AddTodo: React.FC<ChildProps> = ({ updateScreen }) => {
     };
 
     return (
-        <div>
+        <div className="add-todo">
             <input
             	type="text"
             	value={inputValue}
@@ -37,7 +42,7 @@ const AddTodo: React.FC<ChildProps> = ({ updateScreen }) => {
             	onBlur={handleBlur}
             	onKeyDown={handleKeyDown}
             	placeholder="タスクを追加"
-            	className="todo-input"
+            	className="add-todo-inner"
         	/>
         </div>
     );
