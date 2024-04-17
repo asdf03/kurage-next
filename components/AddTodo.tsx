@@ -4,17 +4,26 @@ import { addSupabaseData } from '../lib/addSupabaseData';
 import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
 
 type Props = {
-    setTodoTableData: (value: Database[]) => void;
+    setTodoTableData: (value: Database[]) => void
+    parentTodoId?: string | null
 }
 
-const AddTodo: React.FC<Props> = ({ setTodoTableData }) => {
+const AddTodo: React.FC<Props> = ({ setTodoTableData, parentTodoId = null }) => {
     const [inputValue, setInputValue] = useState<string>('');
-
+    
     const handleBlur = async () => {
         if(!inputValue.trim()) return;
-        await addSupabaseData({
-            title: inputValue,
-        });
+        if (parentTodoId === null) {
+            await addSupabaseData({
+                title: inputValue,
+                parent_id: '',
+            });
+        } else {
+            await addSupabaseData({
+                title: inputValue,
+                parent_id: parentTodoId,
+            });
+        }
         setInputValue('');
         const supabaseData = await fetchSupabaseData();
         if (supabaseData) {

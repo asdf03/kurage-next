@@ -9,7 +9,7 @@ const Home = () => {
 
 	return isLogin ? (
 		<div className="main">
-			<h2>Todo</h2>
+			<h2>Test</h2>
 			<TodoApp />
 		</div>
 	) : (

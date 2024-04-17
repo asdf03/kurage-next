@@ -10,6 +10,7 @@ import AddTodo from "./AddTodo"
 
 const TodoApp = () => {
 	const [todoTableData, setTodoTableData] = useState<Database[]>([])
+	const [activeId, setActiveId] = useState<string | null>(null);
 	const { session: isLogin } = useAuth()
 	const router = useRouter()
 
@@ -55,17 +56,27 @@ const TodoApp = () => {
 		}
 	}
 
+	const addChildTodo = (id: string) => {
+		setActiveId(activeId === id ? null : id)
+	}
+
 	return (
 		<div>
 			{todoTableData.map((item) => (
-				<div className="todo-item" key={item.id}>
-					<div>
-					<button onClick={() => clickCheckBox(item.id, item.status)}>
-						{item.status === "done" ? "✔" : "◯"}
-					</button>
+				<>
+					<div className="todo-item" key={item.id} >
+						<div>
+							<button onClick={() => addChildTodo(item.id)}>＋</button>
+							<button onClick={() => clickCheckBox(item.id, item.status)}>
+								{item.status === "done" ? "✔" : "◯"}
+							</button>
+						</div>
+						<p className={item.status === 'done' ? 'done-todo' : ''}>{item.title}</p>
 					</div>
-					<p>{item.title}</p>
-				</div>
+					{activeId === item.id && (
+						<AddTodo setTodoTableData={setTodoTableData} parentTodoId={item.id} />
+					)}
+				</>
 			))}
 			<AddTodo setTodoTableData={setTodoTableData} />
 		</div>

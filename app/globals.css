@@ -37,6 +37,11 @@ p {
   margin: 0 20px;
 }
 
+.done-todo {
+  text-decoration-line: line-through;
+  color: #aaa;
+}
+
 .add-todo {
   padding: 5px;
 }

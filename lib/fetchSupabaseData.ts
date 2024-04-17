@@ -1,6 +1,6 @@
-import supabase from "./supabase";
+import supabase from "./supabase"
 
-const TABLE_NAME = "todo-app";
+const TABLE_NAME = "todo-app"
 
 export const fetchSupabaseData = async (statusFilter: String | null = null) => {
     try {
@@ -11,6 +11,6 @@ export const fetchSupabaseData = async (statusFilter: String | null = null) => {
         const { data } = await query
         return data
     } catch (error) {
-        console.error(error);
+        console.error(error)
     }
-};
+}
