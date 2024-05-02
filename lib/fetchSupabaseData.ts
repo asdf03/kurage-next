@@ -2,7 +2,7 @@ import supabase from "./supabase"
 
 const TABLE_NAME = "todo-app"
 
-interface Todo {
+export interface Todo {
     id: string
 	title: string
 	description: string
@@ -41,8 +41,6 @@ export const fetchSupabaseData = async (statusFilter: String | null = null) => {
         });
 
         const rootTodos: Todo[] = data.filter(todo => !todo.parent_id);
-
-        console.log(rootTodos)
 
         return rootTodos
     } catch (error) {

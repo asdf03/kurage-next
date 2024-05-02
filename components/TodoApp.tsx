@@ -7,6 +7,7 @@ import useAuth from "@/lib/useAuth"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import AddTodo from "./AddTodo"
+import ShowTodoItem from "./ShowTodoItem"; 
 
 const TodoApp = () => {
 	const [todoTableData, setTodoTableData] = useState<Database[]>([])
@@ -63,20 +64,14 @@ const TodoApp = () => {
 	return (
 		<div>
 			{todoTableData.map((item) => (
-				<>
-					<div className="todo-item" key={item.id} >
-						<div>
-							<button onClick={() => addChildTodo(item.id)}>＋</button>
-							<button onClick={() => clickCheckBox(item.id, item.status)}>
-								{item.status === "done" ? "✔" : "◯"}
-							</button>
-						</div>
-						<p className={item.status === 'done' ? 'done-todo' : ''}>{item.title}</p>
-					</div>
-					{activeId === item.id && (
-						<AddTodo setTodoTableData={setTodoTableData} parentTodoId={item.id} />
-					)}
-				</>
+				 <ShowTodoItem
+					key={item.id}
+					todo={item}
+					clickCheckBox={clickCheckBox}
+					addChildTodo={addChildTodo}
+					activeId={activeId}
+					setTodoTableData={setTodoTableData}
+				/>
 			))}
 			<AddTodo setTodoTableData={setTodoTableData} />
 		</div>
