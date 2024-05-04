@@ -28,6 +28,16 @@ const TodoApp = () => {
 		})();
 	}, []);
 
+	useEffect(() => {
+		if (activeId) {	
+			const focusElement = document.getElementById('focus-add-todo');
+			if (focusElement) {
+				focusElement.focus();
+			}
+			console.log(focusElement)
+		}
+	}, [activeId])
+
 	const clickCheckBox = async (id: string, status: string) => {
 		await setTodoTableData(todoTableData.map(todo => {
 			if (todo.id === id) {

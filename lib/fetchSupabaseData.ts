@@ -1,6 +1,4 @@
-import { root } from "postcss"
 import supabase from "./supabase"
-import { rootCertificates } from "tls"
 
 const TABLE_NAME = "todo-app"
 
@@ -24,9 +22,7 @@ const sortTodos = (todos: Todo[]): Todo[] => {
         }
     });
     return todos
-} 
-
-
+}
 
 export const fetchSupabaseData = async (statusFilter: String | null = null) => {
     try {

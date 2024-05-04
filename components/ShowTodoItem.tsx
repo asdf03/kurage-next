@@ -24,7 +24,7 @@ const ShowTodoItem: React.FC<ShowTodoItemProps> = ({ todo, clickCheckBox, addChi
                 <p className={todo.status === 'done' ? 'done-todo' : ''}>{todo.title}</p>
             </div>
             {activeId === todo.id && (
-                <AddTodo setTodoTableData={setTodoTableData} parentTodoId={todo.id} />
+                <AddTodo setTodoTableData={setTodoTableData} addChildTodo={addChildTodo} parentTodoId={todo.id} />
             )}
             <div className='child-todo'>
                 {todo.children && todo.children.map(child => (
