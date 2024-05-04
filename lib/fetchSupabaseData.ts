@@ -1,4 +1,6 @@
+import { root } from "postcss"
 import supabase from "./supabase"
+import { rootCertificates } from "tls"
 
 const TABLE_NAME = "todo-app"
 
@@ -12,6 +14,19 @@ export interface Todo {
 	parent_id: string
     children?: Todo[];
 }
+
+const sortTodos = (todos: Todo[]): Todo[] => {
+    todos.sort((a, b) => a.created_at.localeCompare(b.created_at))
+
+    todos.forEach(todo => {
+        if (todo.children && todo.children.length > 0) {
+            sortTodos(todo.children);
+        }
+    });
+    return todos
+} 
+
+
 
 export const fetchSupabaseData = async (statusFilter: String | null = null) => {
     try {
@@ -42,7 +57,9 @@ export const fetchSupabaseData = async (statusFilter: String | null = null) => {
 
         const rootTodos: Todo[] = data.filter(todo => !todo.parent_id);
 
-        return rootTodos
+        const sortTodoData = sortTodos(rootTodos)
+
+        return sortTodoData
     } catch (error) {
         console.error(error)
     }

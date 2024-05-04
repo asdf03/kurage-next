@@ -24,10 +24,7 @@ const TodoApp = () => {
 	useEffect(() => {
         (async () => {
 			let supabaseData = await fetchSupabaseData()
-			if (supabaseData) {
-				supabaseData.sort((a, b) => a.created_at.localeCompare(b.created_at))
-				setTodoTableData(supabaseData as Database[])
-			}
+			setTodoTableData(supabaseData as Database[])
 		})();
 	}, []);
 
@@ -42,10 +39,6 @@ const TodoApp = () => {
 		try {
 			await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" })
 			const supabaseData = await fetchSupabaseData()
-			if (supabaseData) {
-				supabaseData.sort((a, b) => a.created_at.localeCompare(b.created_at))
-				setTodoTableData(supabaseData as Database[])
-			}
 			setTodoTableData(supabaseData as Database[])
 		} catch (error) {
 			setTodoTableData(todoTableData.map(todo => {
