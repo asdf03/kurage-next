@@ -3,6 +3,7 @@
 import { Database } from "@/lib/supabase"
 import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
 import { updateSupabaseData } from "@/lib/updateSupabaseData"
+import { deleteSupabaseData } from "@/lib/deleteSupabaseData";
 import useAuth from "@/lib/useAuth"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
@@ -63,6 +64,12 @@ const TodoApp = () => {
 		setActiveId(activeId === id ? null : id)
 	}
 
+	const deleteTodo = async (id: string) => {
+		await deleteSupabaseData(id)
+		let supabaseData = await fetchSupabaseData()
+		setTodoTableData(supabaseData as Database[])
+	}
+
 	return (
 		<div>
 			{todoTableData.map((item) => (
@@ -70,6 +77,7 @@ const TodoApp = () => {
 					key={item.id}
 					todo={item}
 					clickCheckBox={clickCheckBox}
+					deleteTodo={deleteTodo}
 					addChildTodo={addChildTodo}
 					activeId={activeId}
 					setTodoTableData={setTodoTableData}

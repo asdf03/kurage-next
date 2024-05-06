@@ -6,17 +6,19 @@ import AddTodo from "./AddTodo";
 interface ShowTodoItemProps {
     todo: Todo;
     clickCheckBox: (id: string, status: string) => void;
+    deleteTodo: (id: string) => void;
     addChildTodo: (id: string) => void;
     activeId: string | null;
     setTodoTableData: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-const ShowTodoItem: React.FC<ShowTodoItemProps> = ({ todo, clickCheckBox, addChildTodo, activeId, setTodoTableData }) => {
+const ShowTodoItem: React.FC<ShowTodoItemProps> = ({ todo, clickCheckBox, deleteTodo, addChildTodo, activeId, setTodoTableData }) => {
     return (
         <>
             <div className="todo-item" key={todo.id}>
                 <div>
                     <button onClick={() => addChildTodo(todo.id)}>＋</button>
+                    <button onClick={() => deleteTodo(todo.id)}>ー</button>
                     <button onClick={() => clickCheckBox(todo.id, todo.status)}>
                         {todo.status === "done" ? "✔" : "◯"}
                     </button>
@@ -32,6 +34,7 @@ const ShowTodoItem: React.FC<ShowTodoItemProps> = ({ todo, clickCheckBox, addChi
                         key={child.id}
                         todo={child}
                         clickCheckBox={clickCheckBox}
+                        deleteTodo={deleteTodo}
                         addChildTodo={addChildTodo}
                         activeId={activeId}
                         setTodoTableData={setTodoTableData}
