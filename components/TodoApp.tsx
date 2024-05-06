@@ -34,7 +34,6 @@ const TodoApp = () => {
 			if (focusElement) {
 				focusElement.focus();
 			}
-			console.log(focusElement)
 		}
 	}, [activeId])
 
