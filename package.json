@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-android-arm64": "^13.2.4",
     "@supabase/supabase-js": "^2.40.0",
     "install": "^0.13.0",
     "neovim": "^5.1.0",
