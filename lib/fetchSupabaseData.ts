@@ -1,17 +1,7 @@
 import supabase from "./supabase"
+import { Todo } from "@/lib/todo"
 
 const TABLE_NAME = "todo-app"
-
-export interface Todo {
-    id: string
-	title: string
-	description: string
-	status: string
-	due_date: string
-	created_at: string
-	parent_id: string
-    children?: Todo[];
-}
 
 const sortTodos = (todos: Todo[]): Todo[] => {
     todos.sort((a, b) => a.created_at.localeCompare(b.created_at))

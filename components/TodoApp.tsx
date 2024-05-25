@@ -1,6 +1,6 @@
 "use client";
 
-import { Database } from "@/lib/supabase"
+import { Todo } from "@/lib/todo"
 import { fetchSupabaseData } from "@/lib/fetchSupabaseData"
 import { updateSupabaseData } from "@/lib/updateSupabaseData"
 import { deleteSupabaseData } from "@/lib/deleteSupabaseData";
@@ -11,7 +11,7 @@ import AddTodo from "./AddTodo"
 import ShowTodoItem from "./ShowTodoItem"; 
 
 const TodoApp = () => {
-	const [todoTableData, setTodoTableData] = useState<Database[]>([])
+	const [todoTableData, setTodoTableData] = useState<Todo[]>([])
 	const [activeId, setActiveId] = useState<string | null>(null);
 	const { session: isLogin } = useAuth()
 	const router = useRouter()
@@ -25,7 +25,7 @@ const TodoApp = () => {
 	useEffect(() => {
         (async () => {
 			let supabaseData = await fetchSupabaseData()
-			setTodoTableData(supabaseData as Database[])
+			setTodoTableData(supabaseData as Todo[])
 		})();
 	}, []);
 
@@ -49,7 +49,7 @@ const TodoApp = () => {
 		try {
 			await updateSupabaseData({ id: id, status: status === "done" ? "todo" : "done" })
 			const supabaseData = await fetchSupabaseData()
-			setTodoTableData(supabaseData as Database[])
+			setTodoTableData(supabaseData as Todo[])
 		} catch (error) {
 			setTodoTableData(todoTableData.map(todo => {
 				if(todo.id === id) {
@@ -64,10 +64,23 @@ const TodoApp = () => {
 		setActiveId(activeId === id ? null : id)
 	}
 
+	const deleteLocalTodo = (todos: Todo[], id: String): Todo[] => {
+		return todos
+			.filter(todo => todo.id != id)
+			.map(todo => ({
+				...todo,
+				children: todo.children ? deleteLocalTodo(todo.children, id) : []
+			}))
+			.filter(todo => todo.children && todo.children.length < 0 || todo.id !== id)
+	}
+
 	const deleteTodo = async (id: string) => {
+		let filteredTodoData = deleteLocalTodo(todoTableData, id)
+		console.log(filteredTodoData)
+		setTodoTableData(filteredTodoData)
 		await deleteSupabaseData(id)
 		let supabaseData = await fetchSupabaseData()
-		setTodoTableData(supabaseData as Database[])
+		setTodoTableData(supabaseData as Todo[])
 	}
 
 	return (

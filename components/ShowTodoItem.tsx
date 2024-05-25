@@ -1,6 +1,6 @@
 // components/TodoItem.tsx
 import React from 'react';
-import { Todo } from "@/lib/fetchSupabaseData";
+import { Todo } from "@/lib/todo";
 import AddTodo from "./AddTodo";
 
 interface ShowTodoItemProps {
