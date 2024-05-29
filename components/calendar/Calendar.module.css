@@ -1,6 +1,5 @@
 .calendar {
     width: 100%;
-    max-width: 600px;
     margin: 0 auto;
     text-align: center;
 }
@@ -22,6 +21,11 @@
   
 .day {
     background-color: #e0e0e0;
-    padding: 15px;
+    padding: 30px;
     border-radius: 4px;
+}
+
+.today {
+    background-color: #ffcccb;
+    color: #000;
 }

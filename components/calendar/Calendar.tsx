@@ -28,6 +28,12 @@ const Calendar = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
     };
 
+    const today = new Date()
+    const isToday = (day: number) =>
+        day === today.getDate() &&
+        currentDate.getMonth() === today.getMonth() &&
+        currentDate.getFullYear() === today.getFullYear()
+
     return (
         <div className={styles.calendar}>
             <div className={styles.header}>
@@ -37,7 +43,12 @@ const Calendar = () => {
             </div>
             <div className={styles.days}>
                 {daysInMonth.map(day => (
-                    <div key={day} className={styles.day}>{day}</div>
+                    <div
+                        key={day}
+                        className={`${styles.day} ${isToday(day) ? styles.today : ''}`}
+                    >
+                    {day}
+                </div>
                 ))}
             </div>
         </div>
