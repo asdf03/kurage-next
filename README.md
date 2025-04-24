@@ -2,7 +2,7 @@
 notionのような情報管理Webアプリを作成中
 
 ## 使用技術
-- フロント：TS
+- フロント：React
 - バック: Node.js
 - DB: Supabase(postgres)
 - サーバー: Render.com
